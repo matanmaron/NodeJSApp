@@ -23,7 +23,7 @@ io.on('connection', socket => {
         socket.emit('filter', filter.clean(message) );
     });
     socket.on('filterName', name=>{
-        if(name=="null")
+        if(name=="null" || name.replace(/\s/g,'')=="")
         {
             name = "John-Doe";
         }
