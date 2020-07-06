@@ -1,4 +1,3 @@
-const PORT = process.env.PORT || 3000;
 const Filter = require('bad-words');
 filter = new Filter();
 const users = {};
