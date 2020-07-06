@@ -2,10 +2,9 @@ const socket = io('http://localhost:3000');
 const messageContainer = document.getElementById('message-container');
 const messageForm = document.getElementById('send-container');
 const messageInput = document.getElementById('message-input');
-const name = prompt('Name Please?');
+var name = prompt('Name Please?');
 const color = getRandomColor();
-appendMessage('You Joined', color);
-socket.emit('new-user', { name: name, color: color });
+socket.emit('filterName', name);
 
 socket.on('chat-message', data=>{
     appendMessage(`${data.user.name}: ${data.message}`, data.user.color);
@@ -31,6 +30,12 @@ socket.on('filter', message=>{
     messageInput.value = '';
 })
 
+socket.on('filterName', newName=>{
+    name = newName;
+    appendMessage(`You (${name}) Joined`, color);
+    socket.emit('new-user', { name: name, color: color });
+})
+
 function appendMessage(message, color)
 {
     const messageElement = document.createElement('div');
@@ -40,10 +45,10 @@ function appendMessage(message, color)
 }
 
 function getRandomColor() {
-    var letters = '0123456789ABCDEF';
+    var letters = 'ABCDE'.split('');
     var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
+    for (var i=0; i<3; i++ ) {
+        color += letters[Math.floor(Math.random() * letters.length)];
     }
     return color;
   }

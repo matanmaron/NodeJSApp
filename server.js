@@ -4,10 +4,11 @@ filter = new Filter();
 const users = {};
 io.on('connection', socket => {
     socket.on('new-user', user =>{
-        if(user.name==null)
+        if(user.name=="null")
         {
             user.name = "John-Doe";
         }
+        user.name = filter.clean(user.name);
         users[socket.id] = user;
         socket.broadcast.emit('user-connected',user);
     });
@@ -20,5 +21,12 @@ io.on('connection', socket => {
     });
     socket.on('filter', message=>{
         socket.emit('filter', filter.clean(message) );
+    });
+    socket.on('filterName', name=>{
+        if(name=="null")
+        {
+            name = "John-Doe";
+        }
+        socket.emit('filterName', filter.clean(name) );
     });
 });
