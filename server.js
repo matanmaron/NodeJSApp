@@ -1,18 +1,25 @@
-const express = require('express');
-const path = require('path');
 const PORT = process.env.PORT || 3000;
-const io = require('socket.io')(PORT);
 const Filter = require('bad-words');
 filter = new Filter();
 const users = {};
 
-express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs')
-  .get('/', (req, res) => res.render('pages/index'))
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+var express = require('express');
+// Create the app
+var app = express();
 
+// Set up the server
+var server = app.listen(process.env.PORT || 3000, listen);
+
+// This call back just tells us that the server has started
+function listen() {
+  var host = server.address().address;
+  var port = server.address().port;
+  console.log('Example app listening at http://' + host + ':' + port);
+}
+
+app.use(express.static('public'));
+
+const  io = require('socket.io').listen(server);
 io.on('connection', socket => {
     socket.on('new-user', user =>{
         if(user.name=="null")
