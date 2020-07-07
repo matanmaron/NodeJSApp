@@ -1,4 +1,4 @@
-const socket = io('https://matanchatapp.herokuapp.com');
+const socket = io('https://matanchatapp.glitch.me');
 const messageContainer = document.getElementById('message-container');
 const messageForm = document.getElementById('send-container');
 const messageInput = document.getElementById('message-input');
